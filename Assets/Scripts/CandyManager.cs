@@ -28,7 +28,8 @@ public class CandyManager : MonoBehaviour
         GUI.color = Color.black;
 
         //キャンディのストック数を表示
-        string label = "Candy :" + candy;
+        // string label = "Candy :" + candy;
+        string label = $"Candy : {candy}";
 
         //回復カウントしている時だけ秒数を表示
         if (counter > 0) label = label + "(" + counter + "s)";

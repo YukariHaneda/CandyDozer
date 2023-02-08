@@ -5,9 +5,12 @@ using UnityEngine;
 public class CandyManager : MonoBehaviour
 {
     const int DefaultCandyAmount = 30;
+    const int RecoverySeconds = 10;
 
     //現在のキャンディのストック数
     public int candy = DefaultCandyAmount;
+    //ストック回復までの残りの秒数
+    int counter;
 
     public void ConsumeCandy() {
         if (candy > 0) candy--;
@@ -27,6 +30,9 @@ public class CandyManager : MonoBehaviour
         //キャンディのストック数を表示
         string label = "Candy :" + candy;
 
+        //回復カウントしている時だけ秒数を表示
+        if (counter > 0) label = label + "(" + counter + "s)";
+
         GUI.Label(new Rect(50, 50, 100, 30), label);
     }
 
@@ -41,6 +47,22 @@ public class CandyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //キャンディストックがデフォルトより少なく、
+        //回復カウントしていないときにカウントをスタートさせる
+        if (candy < DefaultCandyAmount && counter <= 0) {
+            StartCoroutine(RecoverCandy()); //コルーリンのスタート
+        }
+    }
+
+    IEnumerator RecoverCandy() {
+        counter = RecoverySeconds;
+
+        //1秒ずつカウントを進める
+        while(counter > 0) {
+            yield return new WaitForSeconds(1.0f);
+            counter--;
+        }
+
+        candy++;
     }
 }
